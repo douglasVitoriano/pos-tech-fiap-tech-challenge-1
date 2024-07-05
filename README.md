@@ -4,7 +4,7 @@ Uma API REST em Python utilizando FastAPI para fazer scraping de dados do site d
 
 ## Endpoints
 
-### `/token`
+### `/getUser`
 Endpoint para obter um token de autenticação.
 - **POST**: Recebe `username` e `password` e retorna um token JWT.
 
