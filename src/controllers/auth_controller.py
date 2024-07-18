@@ -1,5 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from src.services.auth_service import AuthService
+from src.models.user import User
+from services.auth_service import AuthService
+from src.services.db_connection import fetch_users_from_database, save_user_to_database
+from typing import List
 
 router = APIRouter()
 auth_service = AuthService()
@@ -18,3 +22,23 @@ def decode_token(token: str):
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
     return payload
+
+@router.post("/users")
+def create_user(user: User):
+
+    users = fetch_users_from_database('database.db')
+
+    # Verificar se o username ou email já existem
+    if AuthService.authenticate_user(users, user.email, user.username):
+        raise HTTPException(status_code=400, detail="Usuário ou email já cadastrados.")
+
+    # Hash da senha
+    hashed_password = hashed_password(user.hashed_password)
+
+    # Criar um objeto User para salvar no banco de dados
+    user_to_save = User(username=user.username, full_name=user.full_name, email=user.email, hashed_password=hashed_password)
+
+    # Salvar o usuário no banco de dados
+    save_user_to_database('database.db', user_to_save)
+
+    return {"username": user.username, "full_name": user.full_name, "email": user.email}
