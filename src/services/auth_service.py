@@ -1,27 +1,26 @@
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from typing import Optional
-from src.models.user import fake_users_db
+from typing import List, Optional
+from src.services.db_connection import fetch_users_from_database
 from src.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 class AuthService:
+  
     def verify_password(self, plain_password, hashed_password):
         # Verificação de senha simples
         return plain_password == hashed_password
 
-    def get_user(self, username: str):
-        if username in fake_users_db:
-            user = fake_users_db[username]
-            return user
-        return None
+    # def get_user(self, username: str):
+    #     if username in fake_users_db:
+    #         user = fake_users_db[username]
+    #         return user
+    #     return None
 
-    def authenticate_user(self, username: str, password: str):
-        user = self.get_user(username)
-        if not user:
-            return False
-        if not self.verify_password(password, user.hashed_password):
-            return False
-        return user
+    def authenticate_user(users, email: str, username: str):
+        for user in users:
+            if user.email == email or user.username == username:
+                return True  # Já existe usuário ou email
+        return False  # Não existe usuário ou email
 
     def create_access_token(self, data: dict, expires_delta: Optional[timedelta] = None):
         to_encode = data.copy()
