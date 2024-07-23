@@ -1,12 +1,15 @@
 from fastapi import APIRouter, HTTPException, Depends
 from src.services.auth_service import AuthService
 from src.models.user import User
-from services.auth_service import AuthService
 from src.services.db_connection import fetch_users_from_database, save_user_to_database
 from typing import List
 
 router = APIRouter()
 auth_service = AuthService()
+
+@router.get("/login")
+async def login():
+    return {"message": "Login endpoint"}
 
 @router.post("/login")
 def login(username: str, password: str):

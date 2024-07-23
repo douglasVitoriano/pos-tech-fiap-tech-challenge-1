@@ -1,15 +1,16 @@
 from typing import List
+from pydantic import BaseModel
 import bcrypt
 
-class User:
-    def __init__(self, username: str, full_name: str, email: str, hashed_password: str):
-        self.username = username
-        self.full_name = full_name
-        self.email = email
-        self.hashed_password = hashed_password
+# Definição do modelo Pydantic
+class User(BaseModel):
+    username: str
+    full_name: str
+    email: str
+    hashed_password: str
 
-#função para criar senha com gash
-def hash_password(password):
+# Função para criar senha com hash
+def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed_password.decode('utf-8')
