@@ -1,4 +1,14 @@
-# Chave secreta para assinar tokens (pode ser gerada aleatoriamente)
-SECRET_KEY = "$2b$12$78vZzYLuPTAcL7Yp5rDbYuKzCAx3G0sHrNci2z/j6vR5j.FmvuCDa"
+import bcrypt
+
+SECRET_KEY = "usertest123"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+fake_users_db = {
+    "usertest": {
+        "username": "usertest",
+        "full_name": "User Test",
+        "email": "usertest@example.com",
+        "hashed_password": bcrypt.hashpw("secret".encode('utf-8'), bcrypt.gensalt()).decode('utf-8')  # Senha: secret
+    }
+}

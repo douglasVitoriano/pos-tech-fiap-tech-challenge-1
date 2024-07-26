@@ -1,20 +1,27 @@
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
-from typing import List, Optional
-from src.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+from typing import Optional
 import bcrypt
-from src.models.user import User
+import jwt
+from jwt import PyJWTError
+from src.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, fake_users_db
 
 class AuthService:
-
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
         return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
-    def authenticate_user(self, users: List[User], email: str, username: str) -> Optional[User]:
-        for user in users:
-            if user.email == email or user.username == username:
-                return user  # Retorna o usuário se encontrado
-        return None  # Não existe usuário ou email
+    def get_user(self, username: str):
+        user = fake_users_db.get(username)
+        if user:
+            return user
+        return None
+
+    def authenticate_user(self, username: str, password: str):
+        user = self.get_user(username)
+        if not user:
+            return False
+        if not self.verify_password(password, user['hashed_password']):
+            return False
+        return user
 
     def create_access_token(self, data: dict, expires_delta: Optional[timedelta] = None) -> str:
         to_encode = data.copy()
@@ -30,5 +37,7 @@ class AuthService:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
             return payload
-        except JWTError:
+        except PyJWTError:
             return None
+
+auth_service = AuthService()

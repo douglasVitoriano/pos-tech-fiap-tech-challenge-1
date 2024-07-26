@@ -3,7 +3,7 @@ from pathlib import Path
 from src.file_handler import FileHandler
 
 router = APIRouter()
-file_handler = FileHandler(Path("C:/pasta-do-projeto/api-fiap-2mlet/files"))
+file_handler = FileHandler(Path("/Users/suportescsa/Documents/cursos/api-fiap-2mlet/pos-tech-fiap-tech-challenge-1/files"))
 
 @router.get("/files")
 async def get_files():
