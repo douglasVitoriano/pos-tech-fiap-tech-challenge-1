@@ -61,3 +61,10 @@ class FileHandler:
 
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+        
+    def download_files(self, links: list):
+        results = []
+        for link in links:
+            result = self.download_file(link)
+            results.append(result)
+        return results
