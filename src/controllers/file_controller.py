@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Query
 from pathlib import Path
 from src.file_handler import FileHandler
 from src.services.scraping_service import SiteScraper
+import logging
 
 router = APIRouter()
 file_handler = FileHandler(Path("/Users/suportescsa/Documents/cursos/api-fiap-2mlet/pos-tech-fiap-tech-challenge-1/files"))
@@ -61,4 +62,32 @@ async def download_multiple_files(tab_name: str = Query(..., description="Nome d
         raise HTTPException(status_code=404, detail="Nenhum link de download encontrado.")
     
     downloaded_files = file_handler.download_files(links_to_download)
+    return downloaded_files
+
+# Lista de nomes de abas fixos
+FIXED_TABS = ["Produção", "Processamento", "Comercialização", "Importação", "Exportação"]
+
+@router.get("/download-all")
+async def download_all_tabs():
+    scraper = SiteScraper("http://vitibrasil.cnpuv.embrapa.br/")
+    all_download_links = []
+
+    for tab_name in FIXED_TABS:
+        try:
+            download_links = scraper.get_tab_with_sub_and_download_links(tab_name)
+            if isinstance(download_links, dict):
+                for sub_tab, links in download_links.items():
+                    if isinstance(links, dict):
+                        all_download_links.extend(links.values())
+                    else:
+                        all_download_links.append(links)
+            elif isinstance(download_links, list):
+                all_download_links.extend(download_links)
+        except Exception as e:
+            logging.error(f"Erro ao processar a aba '{tab_name}': {e}")
+
+    if not all_download_links:
+        raise HTTPException(status_code=404, detail="Nenhum link de download encontrado em nenhuma aba.")
+
+    downloaded_files = file_handler.download_files(all_download_links)
     return downloaded_files
