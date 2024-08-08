@@ -3,6 +3,9 @@ from pathlib import Path
 from src.file_handler import FileHandler
 from src.services.scraping_service import SiteScraper
 import logging
+import subprocess
+import shutil
+import os
 
 router = APIRouter()
 file_handler = FileHandler(Path("/Users/suportescsa/Documents/cursos/api-fiap-2mlet/pos-tech-fiap-tech-challenge-1/files"))
@@ -61,6 +64,11 @@ async def download_multiple_files(tab_name: str = Query(..., description="Nome d
     if not links_to_download:
         raise HTTPException(status_code=404, detail="Nenhum link de download encontrado.")
     
+    # Verificar e deletar a pasta 'files' se existir
+    files_dir = file_handler.files_directory
+    if files_dir.exists() and files_dir.is_dir():
+        shutil.rmtree(files_dir)
+    
     downloaded_files = file_handler.download_files(links_to_download)
     return downloaded_files
 
@@ -88,6 +96,29 @@ async def download_all_tabs():
 
     if not all_download_links:
         raise HTTPException(status_code=404, detail="Nenhum link de download encontrado em nenhuma aba.")
+    
+    # Verificar e deletar a pasta 'files' se existir
+    files_dir = file_handler.files_directory
+    if files_dir.exists() and files_dir.is_dir():
+        shutil.rmtree(files_dir)
 
     downloaded_files = file_handler.download_files(all_download_links)
     return downloaded_files
+
+@router.get("/start-dashboard")
+async def start_streamlit():
+    try:
+        # Inicia o Streamlit em um subprocesso
+        current_dir = Path.cwd()
+        dash_path = current_dir.parent / 'pos-tech-fiap-tech-challenge-1' / 'src' / 'services' / 'dash_service.py'
+        dash_path
+        
+        if not dash_path.exists():
+            raise HTTPException(status_code=404, detail=f"Arquivo não encontrado: {dash_path}")
+        
+        # Inicia o Streamlit
+        subprocess.Popen(["streamlit", "run", str(dash_path)])
+        return {"message": "Streamlit iniciado com sucesso."}
+    except Exception as e:
+        logging.error(f"Erro ao iniciar o Streamlit: {e}")
+        return {"error": str(e)}
