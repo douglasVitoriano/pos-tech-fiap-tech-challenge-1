@@ -3,9 +3,13 @@ from pathlib import Path
 from src.file_handler import FileHandler
 from src.services.scraping_service import SiteScraper
 import logging
+import os
+import subprocess
+
+
 
 router = APIRouter()
-file_handler = FileHandler(Path("/Users/suportescsa/Documents/cursos/api-fiap-2mlet/pos-tech-fiap-tech-challenge-1/files"))
+file_handler = FileHandler(Path("/Users/Desktop/Documents/MLE/fase-01/pos-tech-fiap-tech-challenge-1/files"))
 
 """ @router.get("/files")
 async def get_files():
@@ -91,3 +95,33 @@ async def download_all_tabs():
 
     downloaded_files = file_handler.download_files(all_download_links)
     return downloaded_files
+
+# @router.get("/start-dashboard")
+# async def start_streamlit():
+#     try:
+#         # Inicia o Streamlit em um subprocesso
+#         current_dir = os.getcwd()
+#         dash_path = os.path.abspath(os.path.join(current_dir, '..', 'services', 'dash.py'))
+#         dash_path
+        
+#         return {"message": "Streamlit iniciado com sucesso."}
+#     except Exception as e:
+#         return {"error": str(e)}
+
+@router.get("/start-dashboard")
+async def start_streamlit():
+    try:
+        # Inicia o Streamlit em um subprocesso
+        current_dir = Path.cwd()
+        dash_path = current_dir.parent / 'pos-tech-fiap-tech-challenge-1' / 'src' / 'services' / 'dash.py'
+        dash_path
+        
+        if not dash_path.exists():
+            raise HTTPException(status_code=404, detail=f"Arquivo não encontrado: {dash_path}")
+        
+        # Inicia o Streamlit
+        subprocess.Popen(["streamlit", "run", str(dash_path)])
+        return {"message": "Streamlit iniciado com sucesso."}
+    except Exception as e:
+        logging.error(f"Erro ao iniciar o Streamlit: {e}")
+        return {"error": str(e)}

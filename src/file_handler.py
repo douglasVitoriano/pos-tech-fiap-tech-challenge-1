@@ -25,7 +25,7 @@ class FileHandler:
 
             filename = link.split('/')[-1]
             timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            filename_with_timestamp = f"{timestamp}_{filename}"
+            filename_with_timestamp = f"{filename}"
 
             save_dir = self.files_directory
             os.makedirs(save_dir, exist_ok=True)
