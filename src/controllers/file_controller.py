@@ -48,7 +48,7 @@ async def get_tab_with_sub_and_download_links(tab_name: str = Query(..., descrip
         return download_links
     raise HTTPException(status_code=404, detail=f"Link da aba '{tab_name}' não encontrado.") """
 
-@router.get("/download-multiple")
+""" @router.get("/download-multiple")
 async def download_multiple_files(tab_name: str = Query(..., description="Nome da aba para procurar")):
     scraper = SiteScraper("http://vitibrasil.cnpuv.embrapa.br/")
     download_links = scraper.get_tab_with_sub_and_download_links(tab_name)
@@ -70,7 +70,7 @@ async def download_multiple_files(tab_name: str = Query(..., description="Nome d
         shutil.rmtree(files_dir)
     
     downloaded_files = file_handler.download_files(links_to_download)
-    return downloaded_files
+    return downloaded_files """
 
 # Lista de nomes de abas fixos
 FIXED_TABS = ["Produção", "Processamento", "Comercialização", "Importação", "Exportação"]
