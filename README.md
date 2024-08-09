@@ -23,7 +23,7 @@ Esses dados serão utilizados para alimentar uma base de dados, que futuramente 
 - Publicar o projeto em um repositório GitHub com toda a documentação necessária.
 
 ### Estrutura do Projeto
-
+```
 pos-tech-fiap-tech-challenge-1/
 │
 ├── src/
@@ -44,7 +44,7 @@ pos-tech-fiap-tech-challenge-1/
 ├── Dockerfile
 ├── README.md
 └── requirements.txt
-
+```
 ## Como Executar
 
 1. Clone o repositório.
