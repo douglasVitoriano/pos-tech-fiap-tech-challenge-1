@@ -47,26 +47,42 @@ pos-tech-fiap-tech-challenge-1/
 ```
 ## Como Executar
 
-1. Clone o repositório.
+1. Clone o repositório e faça a instalação das dependencias num ambiente virtual.
 
+```bash
 git clone https://github.com/douglasVitoriano/pos-tech-fiap-tech-challenge-1.git
-
-2. Navegue até o diretório do projeto: 
-
 cd pos-tech-fiap-tech-challenge-1
+```
 
-3. Execute o arquivo `main.py` para iniciar o programa.
+2. Faça a instalação das dependecias usando ambiente virtual.
+```bash
+python3 -m venv .venv-tech-challenge-1
 
-python src/main.py
+# Linux/MacOS
+source .venv-tech-challenge-1/bin/activate
 
-Contribuidor
+# Windows
+.\.venv-tech-challenge-1\Scripts\activate
 
-- Douglas Augusto Vitoriano | douglas_vitoriano@yahoo.com.br | RM357899
+pip install -r requirements.txt
+```
+
+3. Inicie a API localmente
+```bash
+uvicorn src.main:app --prot 8000
+```
+
+4. Acesse o Swagger
+http://localhost:8000/docs
+
+## Contribuidores
 
 - Ayres Alves Guimarães Neto | ayresguimaraes@gmail.com | RM357032
 
 - Elzevir De Sousa Sá Filho | safilhoelzevirsafilho@gmail.com | RM356837
 
 - Danilo Matrangolo Marano | danilo.m.marano@gmail.com | RM357884
+
+- Douglas Augusto Vitoriano | douglas_vitoriano@yahoo.com.br | RM357899
 
 
