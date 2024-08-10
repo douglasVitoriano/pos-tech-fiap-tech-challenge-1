@@ -67,5 +67,6 @@ Contribuidor
 
 - Elzevir De Sousa Sá Filho | safilhoelzevirsafilho@gmail.com | RM356837
 
+- Danilo Matrangolo Marano | danilo.m.marano@gmail.com | RM357884
 
 
