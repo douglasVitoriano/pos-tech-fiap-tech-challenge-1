@@ -85,4 +85,6 @@ http://localhost:8000/docs
 
 - Douglas Augusto Vitoriano | douglas_vitoriano@yahoo.com.br | RM357899
 
+- Wagner Calçada dos Santos | gyo1232010@hotmail.com | RM357846
+
 
