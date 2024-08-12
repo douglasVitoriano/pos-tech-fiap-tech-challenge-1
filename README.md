@@ -1,6 +1,6 @@
 # API de Consulta de Dados de Vitivinicultura da Embrapa
 
-# Introdução
+## Introdução
 Este projeto foi desenvolvido como parte do Tech Challenge fase 1 para analisar os dados de vitivinicultura da Embrapa, disponíveis no site VitiBrasil Embrapa.
 
 A ideia principal deste projeto é a criação de uma API pública que permita a consulta dos dados nas seguintes categorias:
